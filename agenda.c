@@ -10,13 +10,16 @@ typedef struct P {
 	int telefone;
 } pessoa;
 typedef struct var {
-	int cont, choice, i;
+	int cont, choice, i, j;
+	pessoa definida;
 } variaveis;	
 
 void insere(variaveis *inicio);
 void exclui();
 void busca(variaveis *inicio);
 void mostra(variaveis *inicio);
+void insertionSort(variaveis *inicio);
+
 
 int main () {
 
@@ -62,26 +65,8 @@ void insere(variaveis *inicio) {
 	scanf("%d", &name->telefone);
 	
     inicio->cont++;
-    //inicio->cont2 *= 2;
-    //inicio->cont2++;
-
-	/*int *tamanho;
 	
-	char* nome;
-
-    nome = (char *)malloc(20 * sizeof(char));
-        
-    tamanho = (int *)malloc(sizeof(int));
-       
-    printf("Nome: ");
-    scanf("%s",nome);
-
-    *tamanho = strlen(nome);
-
-    nome = (char *)realloc(nome,(*tamanho) * sizeof(char));
-      
-    free(tamanho); */
-
+	insertionSort(inicio);
 }
 void exclui() {
 	printf("Opcao nao disponivel.\n");
@@ -109,3 +94,17 @@ void mostra(variaveis *inicio) {
 		name++;
 	}	
 }
+void insertionSort(variaveis *inicio){
+	pessoa *info;
+	info = pbuffer + sizeof(variaveis);
+	if(inicio->cont > 1){
+		for (inicio->i = 1; inicio->i < inicio->cont; inicio->i++) {
+			inicio->definida = info[inicio->i];
+			for (inicio->j = inicio->i - 1; (inicio->j >= 0) && (strcmp(info[inicio->j].nome,inicio->definida.nome) == 1); inicio->j--) {
+				info[inicio->j + 1] = info[inicio->j];
+			}
+			info[inicio->j+1] = inicio->definida;
+		}
+	}
+}
+
