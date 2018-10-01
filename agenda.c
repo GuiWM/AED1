@@ -18,7 +18,7 @@ void insere(variaveis *inicio);
 void exclui();
 void busca(variaveis *inicio);
 void mostra(variaveis *inicio);
-void insertionSort(variaveis *inicio);
+void insertionsort(variaveis *inicio);
 
 
 int main () {
@@ -34,13 +34,13 @@ int main () {
 	//aux = pbuffer;
 	while (inicio->choice != 5) {
 
-		printf("[>1<] Inserir\n[>2<] Excluir\n[>3<] Buscar\n[>4<] Mostrar \n[>5<] Sair\n");
+		printf("\n[>1<] Inserir\n[>2<] Excluir\n[>3<] Buscar\n[>4<] Mostrar \n[>5<] Sair\n");
 		scanf("%d", &inicio->choice);
 
 		if (inicio->choice == 1) {
 			insere(inicio);
 		} else if (inicio->choice == 2) {
-			exclui();
+			exclui(inicio);
 		} else if (inicio->choice == 3) {
 			//inicio = pbuffer;
 			busca(inicio);
@@ -66,11 +66,18 @@ void insere(variaveis *inicio) {
 	
     inicio->cont++;
 	
-	insertionSort(inicio);
+	insertionsort(inicio);
 }
-void exclui() {
-	printf("Opcao nao disponivel.\n");
-}
+void exclui(variaveis *inicio) {
+	if (inicio->cont >= 1) {
+		pbuffer = (pessoa *) realloc(pbuffer, sizeof(variaveis) + (inicio->cont * sizeof(pessoa)));	
+		inicio->cont--;
+		printf("Última pessoa excluida com sucesso...");
+	}
+	else {	
+		printf("Não há pessoas para excluir...");	
+	}
+} 
 void busca(variaveis *inicio) {
 	pessoa *name;
 	name = pbuffer + sizeof(variaveis);
@@ -94,17 +101,16 @@ void mostra(variaveis *inicio) {
 		name++;
 	}	
 }
-void insertionSort(variaveis *inicio){
+void insertionsort(variaveis *inicio){
 	pessoa *info;
 	info = pbuffer + sizeof(variaveis);
 	if(inicio->cont > 1){
 		for (inicio->i = 1; inicio->i < inicio->cont; inicio->i++) {
 			inicio->definida = info[inicio->i];
-			for (inicio->j = inicio->i - 1; (inicio->j >= 0) && (strcmp(info[inicio->j].nome,inicio->definida.nome) == 1); inicio->j--) {
+			for (inicio->j = inicio->i - 1; (inicio->j >= 0) && (info[inicio->j].nome > inicio->definida.nome); inicio->j--) {
 				info[inicio->j + 1] = info[inicio->j];
 			}
 			info[inicio->j+1] = inicio->definida;
 		}
 	}
 }
-
