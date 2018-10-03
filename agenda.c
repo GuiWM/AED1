@@ -10,8 +10,8 @@ typedef struct P {
 	int telefone;
 } pessoa;
 typedef struct var {
-	int cont, choice, i, j;
-	pessoa definida;
+	int cont, choice, i, j, esco, min_id;
+	pessoa definida, min;
 } variaveis;	
 
 void insere(variaveis *inicio);
@@ -19,6 +19,8 @@ void exclui();
 void busca(variaveis *inicio);
 void mostra(variaveis *inicio);
 void insertionsort(variaveis *inicio);
+void selectionsort (variaveis *inicio);
+void bubblesort (variaveis *inicio);
 
 
 int main () {
@@ -32,9 +34,13 @@ int main () {
 	inicio->cont = 0;
 	//inicio->cont2 = 1;
 	//aux = pbuffer;
+	printf("Qual o modelo de ordenacao que voce  quer? ");
+	scanf("%d", &inicio->esco);
+	
 	while (inicio->choice != 5) {
 
 		printf("\n[>1<] Inserir\n[>2<] Excluir\n[>3<] Buscar\n[>4<] Mostrar \n[>5<] Sair\n");
+		printf("\n");
 		scanf("%d", &inicio->choice);
 
 		if (inicio->choice == 1) {
@@ -66,13 +72,15 @@ void insere(variaveis *inicio) {
 	
     inicio->cont++;
 	
-	insertionsort(inicio);
+	//insertionsort(inicio);
+	//selectionsort(inicio);
+	bubblesort(inicio);
 }
 void exclui(variaveis *inicio) {
 	if (inicio->cont >= 1) {
 		pbuffer = (pessoa *) realloc(pbuffer, sizeof(variaveis) + (inicio->cont * sizeof(pessoa)));	
 		inicio->cont--;
-		printf("Última pessoa excluida com sucesso...");
+		printf("Ultima pessoa excluida com sucesso...");
 	}
 	else {	
 		printf("Não há pessoas para excluir...");	
@@ -114,3 +122,39 @@ void insertionsort(variaveis *inicio){
 		}
 	}
 }
+void selectionsort (variaveis *inicio) {
+   
+   pessoa *info;
+   info = pbuffer + sizeof(variaveis);
+   
+   inicio->min_id = 0;
+   for (inicio->i=0; inicio->i< inicio->cont-1; inicio->i++) { 
+		inicio->min = info[inicio->i]; 
+		for (inicio->j = inicio->i + 1; inicio->j < inicio->cont; inicio->j++) 
+			if (info[inicio->j].nome[0] < inicio->min.nome[0]) { 
+				inicio->min = info[inicio->j]; 
+				inicio->min_id = inicio->j; 
+			} 
+		inicio->definida = info[inicio->i]; 
+		info[inicio->i] = info[inicio->min_id]; 
+		info[inicio->min_id] = inicio->definida;
+		inicio->min_id = inicio->i+1;
+	} 
+}
+void bubblesort (variaveis *inicio) {
+	
+	pessoa *info;
+	info = pbuffer + sizeof(variaveis);
+	  
+	for (inicio->i = 0; inicio->i < inicio->cont-1; inicio->i++) { 
+		for (inicio->j=0; inicio->j < inicio->cont - inicio->i - 1; inicio->j++) {
+			if (info[inicio->j].nome[0] > info[inicio->j + 1].nome[0]) { 					
+				inicio->definida = info[inicio->j]; 
+				info[inicio->j] = info[inicio->j + 1]; 
+				info[inicio->j+1] = inicio->definida; 
+			} 
+		}
+	} 
+}
+	
+	
